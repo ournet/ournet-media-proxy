@@ -1,5 +1,5 @@
 {
   "script": "./lib/app.js",
-  "max_memory_restart": "256M",
+  "max_memory_restart": "200M",
   "name": "ournet-media-proxy"
 }

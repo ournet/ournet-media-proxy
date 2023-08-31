@@ -35,19 +35,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ournet/news-image-proxy.git"
+    "url": "https://github.com/Ournet/ournet-media-proxy.git"
   },
   "keywords": [
     "ournet",
-    "news-image-proxy",
+    "ournet-media-proxy",
     "proxy"
   ],
   "author": "Dumitru Cantea",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Ournet/news-image-proxy/issues"
+    "url": "https://github.com/Ournet/ournet-media-proxy/issues"
   },
-  "homepage": "https://github.com/Ournet/news-image-proxy#readme",
+  "homepage": "https://github.com/Ournet/ournet-media-proxy#readme",
   "devDependencies": {
     "@types/boom": "^7.2.1",
     "@types/express": "^4.16.0",
