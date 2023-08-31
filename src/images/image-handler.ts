@@ -69,7 +69,7 @@ const handleResponse = (
 export default (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id as string;
   const ext = req.params.ext;
-  const size = req.params.size as ImageSizeName;
+  const size = req.params.size.toUpperCase() as ImageSizeName;
   const originalExt = getExtension(getContentTypeFromId(id));
 
   const host = "s3.eu-central-1.amazonaws.com";
