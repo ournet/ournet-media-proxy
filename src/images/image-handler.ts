@@ -7,7 +7,7 @@ import {
   getContentTypeFromId,
   getExtension,
   getSize,
-  ImageSizeName,
+  ImageSizeName
 } from "./image";
 
 const CACHE_CONTROL_VALUE = "public, max-age=5184000";
@@ -31,40 +31,39 @@ const headersToDelete = [
   "server",
   "x-amz-request-id",
   "connection",
-  "last-modified",
+  "last-modified"
 ];
 
-const handleResponse = (
-  id: string,
-  ext: string,
-  size: ImageSizeName,
-  res: Response
-) => (response: http.IncomingMessage) => {
-  headersToDelete.forEach((header) => {
-    delete response.headers[header];
-  });
+const handleResponse =
+  (id: string, ext: string, size: ImageSizeName, res: Response) =>
+  (response: http.IncomingMessage) => {
+    headersToDelete.forEach((header) => {
+      delete response.headers[header];
+    });
 
-  const originalContentType = getContentTypeFromId(id);
-  const originalExt = getExtension(originalContentType);
+    const originalContentType = getContentTypeFromId(id);
+    const originalExt = getExtension(originalContentType);
 
-  if (size === ImageSizeName.ORIGINAL && ext === originalExt) {
-    response.headers["cache-control"] = CACHE_CONTROL_VALUE;
-    res.writeHead(response.statusCode || 200, response.headers);
-    response.pipe(res);
-    return;
-  }
+    if (size === ImageSizeName.ORIGINAL && ext === originalExt) {
+      response.headers["cache-control"] = CACHE_CONTROL_VALUE;
+      res.writeHead(response.statusCode || 200, response.headers);
+      response.pipe(res);
+      return;
+    }
 
-  let instance = sharp();
-  if (ext !== originalExt) {
-    instance = instance.toFormat(ext);
-  }
-  if (size !== ImageSizeName.ORIGINAL) {
-    const newSize = getSize(size);
-    instance = instance.resize(newSize);
-  }
+    let instance = sharp().on("error", (error) => {
+      console.error("sharp error", error);
+    });
+    if (ext !== originalExt) {
+      instance = instance.toFormat(ext);
+    }
+    if (size !== ImageSizeName.ORIGINAL) {
+      const newSize = getSize(size);
+      instance = instance.resize(newSize);
+    }
 
-  sendImage(response.pipe(instance), res, ext);
-};
+    sendImage(response.pipe(instance), res, ext);
+  };
 
 export default (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id as string;
@@ -74,7 +73,12 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
   const host = "s3.eu-central-1.amazonaws.com";
 
-  const path = `/media.ournetcdn.net/images/${id.substring(0,4)}/${id}.${originalExt}`;
+  const path = `/media.ournetcdn.net/images/${id.substring(
+    0,
+    4
+  )}/${id}.${originalExt}`;
+
+  console.log("path", path);
 
   const options = { timeout: 3000, method: "GET", host, path };
 
