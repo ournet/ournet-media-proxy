@@ -15,12 +15,10 @@ async function start() {
 
   server.use(cors());
 
-  server.get(
-    `/images/:size(${Object.values(ImageSizeName)
-      .map((it) => it.toLowerCase())
-      .join("|")})/:id.:ext(jpeg|png|webp)`,
-    imageHandler
-  );
+  const path = `/images/:size(${Object.values(ImageSizeName)
+    .map((it) => it.toLowerCase())
+    .join("|")})/:id.:ext(jpeg|png|webp)`;
+  server.get(path, imageHandler);
 
   server.use((_req, res) => res.sendStatus(404).end());
 

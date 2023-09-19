@@ -51,9 +51,7 @@ const handleResponse =
       return;
     }
 
-    let instance = sharp().on("error", (error) => {
-      console.error("sharp error", error);
-    });
+    let instance = sharp();
     if (ext !== originalExt) {
       instance = instance.toFormat(ext);
     }
@@ -77,8 +75,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
     0,
     4
   )}/${id}.${originalExt}`;
-
-  console.log("path", path);
 
   const options = { timeout: 3000, method: "GET", host, path };
 
