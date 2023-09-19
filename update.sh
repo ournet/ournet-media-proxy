@@ -3,5 +3,5 @@
 #update repository
 git pull
 yarn
-tsc
+yarn tsc
 pm2 restart ./pm2.json
