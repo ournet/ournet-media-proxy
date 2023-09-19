@@ -16,9 +16,9 @@ async function start() {
   server.use(cors());
 
   server.get(
-    `/images/:size(${Object.values(ImageSizeName).join(
-      "|"
-    )})/:id.:ext(jpeg|png|webp)`,
+    `/images/:size(${Object.values(ImageSizeName)
+      .map((it) => it.toLowerCase())
+      .join("|")})/:id.:ext(jpeg|png|webp)`,
     imageHandler
   );
 
